@@ -2,7 +2,7 @@
 
 A LaTeX project for IEEE journal and conference papers built on `IEEEtran`, with the parts that usually get improvised at the last minute already in place: S-numbered supplementary material, one shared author file, a marked/clean revision switch, latexdiff, and the letters you need at submission, revision, and proof stage.
 
-![Journal and conference first pages, with a close-up of the revision marks](preview/overview.png)
+![Close-ups of the journal and conference author blocks, revision marks, response letter, and S-numbered supplementary](preview/overview.png)
 
 **Preview:** [journal paper](preview/main.pdf) · [conference paper](preview/main-conference.pdf) · [supplementary](preview/supplementary.pdf) · [response to reviewers](preview/response.pdf) · [cover letter](preview/cover_letter.pdf) · [proof response](preview/proof_response.pdf)
 
