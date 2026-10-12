@@ -2,6 +2,8 @@
 
 A LaTeX project for IEEE journal and conference papers built on `IEEEtran`, with the parts that usually get improvised at the last minute already in place: S-numbered supplementary material, one shared author file, a marked/clean revision switch, latexdiff, and the letters you need at submission, revision, and proof stage.
 
+![Journal and conference first pages, with a close-up of the revision marks](preview/overview.png)
+
 **Preview:** [journal paper](preview/main.pdf) · [conference paper](preview/main-conference.pdf) · [supplementary](preview/supplementary.pdf) · [response to reviewers](preview/response.pdf) · [cover letter](preview/cover_letter.pdf) · [proof response](preview/proof_response.pdf)
 
 Built from the one-prompt setup described in [One Prompt, One Complete IEEE Transactions Project With Claude Code](https://blog.wangxm.com/2026/07/ieee-transactions-project-claude-code-one-prompt/), extended with a journal/conference switch.
@@ -61,7 +63,7 @@ The letters don't change with the mode. `response.tex` works as a journal respon
 │   ├── response.tex          # point-by-point response to reviewers
 │   ├── cover_letter.tex      # submission cover letter (journal)
 │   └── proof_response.tex    # galley-proof author-query reply (journal)
-├── preview/                  # committed preview PDFs of this template (make preview)
+├── preview/                  # committed preview PDFs (make preview) and the README image
 └── Makefile
 ```
 
