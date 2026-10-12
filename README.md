@@ -140,3 +140,7 @@ This section is for coding agents (Claude Code, Codex, Cursor, and so on) workin
 - Delete the revision-markup demo paragraph in `sections/01_introduction.tex`.
 - Check that the last page's columns are balanced. If they aren't, add `\usepackage{flushend}` or `\IEEEtriggeratref{n}` before the bibliography.
 - Run `pdfinfo main.pdf` to make sure the PDF title, author, and keywords are right.
+
+## License
+
+[MIT](LICENSE), covering the template files. `IEEEtran.cls` is not included here; it comes with your TeX distribution under its own license (LPPL).
