@@ -1,0 +1,37 @@
+% preamble/revision.tex
+% Revision markup shared by main.tex and supplementary.tex.
+%
+%   \rev{text}        revised/added text           (blue)
+%   \del{text}        deleted text                 (red strikeout)
+%   \todo{note}       note to co-authors           (orange)
+%   \resp{R1.2}{text} revised text answering a reviewer comment, with the comment tag in the margin so the response letter can point at it
+%
+% Marked mode is the default. Clean mode (camera-ready) drops every mark: \rev and \resp print plain text, \del and \todo print nothing.
+% Switch to clean mode either from the command line, without editing files:
+%   latexmk -pdf -usepretex="\def\CleanCopy{1}" main.tex   (or: make cleancopy)
+% or, e.g. on Overleaf, by uncommenting \def\CleanCopy{1} at the top of main.tex.
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{marginnote}
+
+\newif\ifCleanCopy
+\ifdefined\CleanCopy
+  \ifnum\CleanCopy=1 \CleanCopytrue\fi
+\fi
+
+\ifCleanCopy
+  \newcommand{\rev}[1]{#1}
+  \newcommand{\del}[1]{}
+  \newcommand{\todo}[1]{}
+  \newcommand{\resp}[2]{#2}
+\else
+  \definecolor{revblue}{RGB}{0,0,200}
+  \definecolor{delred}{RGB}{200,0,0}
+  \definecolor{todoorange}{RGB}{230,120,0}
+  \newcommand{\rev}[1]{{\color{revblue}#1}}
+  \newcommand{\del}[1]{{\color{delred}\sout{#1}}}
+  \newcommand{\todo}[1]{\unskip\space{\color{todoorange}\textbf{[TODO:} #1\textbf{]}}}
+  \newcommand{\resp}[2]{%
+    \marginnote{\color{revblue}\scriptsize\textbf{#1}}%
+    {\color{revblue}#2}}
+\fi

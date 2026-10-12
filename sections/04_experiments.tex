@@ -1,0 +1,24 @@
+\section{Experiments}
+\label{sec:experiments}
+
+Give enough detail for someone else to reproduce the results, then report them. Put long parameter lists and extra results in the supplementary material and point to them from here (e.g., Section~S-II).
+
+\subsection{Experimental Setup}
+\label{sec:setup}
+Describe the datasets or test conditions, the baselines and how they were configured, the evaluation metrics, and the hardware and software used.
+
+\subsection{Results}
+\label{sec:results}
+Table~\ref{tab:example} compares the proposed method against two baselines. Each table lives in its own file under \texttt{tables/} and is pulled in with \verb|\input| where it is first mentioned. Table captions go above the table, in title case.
+
+\input{tables/tab_example}
+
+Figures work the same way, except that the caption goes below the figure. Save figures as vector PDF where possible and put them in \texttt{figures/}; \verb|\graphicspath| is already set, so the file name alone is enough. Use \verb|figure*| and \verb|table*| for floats that span both columns.
+
+% Figure example (put fig_example.pdf in figures/ and uncomment):
+% \begin{figure}[!t]
+%   \centering
+%   \includegraphics[width=\columnwidth]{fig_example}
+%   \caption{Caption below the figure, in sentence case.}
+%   \label{fig:example}
+% \end{figure}

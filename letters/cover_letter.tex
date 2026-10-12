@@ -1,0 +1,40 @@
+% letters/cover_letter.tex: submission cover letter to the Editor-in-Chief.
+% Build with `make letters` (or latexmk -pdf letters/cover_letter.tex from the project root). Title, authors, and journal come from preamble/authors.tex.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\input{preamble/authors}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+
+\begin{document}
+
+\today
+
+Prof.\ XXX\\
+Editor-in-Chief, \PaperVenue
+
+Dear Prof.\ XXX,
+
+Please find enclosed our manuscript, ``\PaperTitle,'' by \PaperAuthorsPlain, which we submit for consideration as a regular paper in the \PaperVenue.
+
+State the problem in one or two sentences and why it matters to the readers of this journal. The main contributions of the manuscript are:
+\begin{enumerate}
+  \item First contribution, stated concretely.
+  \item Second contribution, with the key quantitative result.
+\end{enumerate}
+
+We confirm that this manuscript is original work that has not been published before and is not under consideration for publication elsewhere. The authors have no conflicts of interest to declare, and all authors have approved the manuscript and agree with its submission to the \PaperVenue.
+
+Thank you for considering our manuscript.
+
+Sincerely,
+
+\PaperCorrespondingAuthor\\
+On behalf of all authors\\
+\AuthorADept, \AuthorAInst\\
+E-mail: \href{mailto:\PaperCorrespondingEmail}{\PaperCorrespondingEmail}
+
+\end{document}

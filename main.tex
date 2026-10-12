@@ -1,0 +1,64 @@
+% main.tex: IEEE manuscript (journal or conference, set in preamble/venue.tex).
+% Title, authors, and header live in preamble/authors.tex; the body lives in sections/, one file per section.
+%
+% Camera-ready without revision marks: run `make cleancopy`, or (on Overleaf) uncomment the next line.
+% \def\CleanCopy{1}
+\input{preamble/venue}
+\documentclass[\PaperMode]{IEEEtran}
+% Conference camera-ready: some conferences require the IEEE copyright line at the bottom of the first column. Uncomment the next line here and the \IEEEpubid line before \maketitle, using the code from your copyright form.
+% \IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\input{preamble/authors}
+\input{preamble/revision}
+
+\hypersetup{
+  pdftitle={\PaperTitle},
+  pdfauthor={\PaperAuthorsPlain},
+  pdfkeywords={\PaperKeywords},
+}
+
+% Uneven columns on the last page? Either \usepackage{flushend} here, or put \IEEEtriggeratref{n} before the bibliography (n = reference to break after).
+
+\begin{document}
+
+\title{\PaperTitle}
+\PaperAuthors
+\PaperHeader
+% \IEEEpubid{\makebox[\columnwidth]{979-8-XXXX-XXXX-X/26/\$31.00~\copyright2026 IEEE\hfill}\hspace{\columnsep}\makebox[\columnwidth]{ }}
+
+\maketitle
+
+\begin{abstract}
+This is the abstract. State the problem, the approach, and the main quantitative result in 150 to 250 words. IEEE abstracts are a single paragraph with no citations, footnotes, or undefined abbreviations.
+\end{abstract}
+
+\begin{IEEEkeywords}
+\PaperKeywords
+\end{IEEEkeywords}
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_method}
+\input{sections/04_experiments}
+\input{sections/05_discussion}
+\input{sections/06_conclusion}
+
+\section*{Acknowledgment}
+The authors would like to thank XXX for helpful discussions.
+
+\bibliographystyle{IEEEtran}
+\bibliography{bib/refs}
+
+% Biographies are a journal requirement; conference papers have none.
+\ifCLASSOPTIONconference\else
+\input{sections/biographies}
+\fi
+
+\end{document}

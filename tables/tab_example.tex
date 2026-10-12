@@ -1,0 +1,15 @@
+% tables/tab_example.tex: one file per table, \input where it is used. IEEE style puts the caption ABOVE the table.
+\begin{table}[!t]
+  \centering
+  \caption{Comparison With Baseline Methods}
+  \label{tab:example}
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    Method        & Accuracy (\%) & Runtime (ms) & Params (M) \\
+    \midrule
+    Baseline A    & 85.2          & 12.4         & 3.1        \\
+    Baseline B    & 87.9          & 18.7         & 5.6        \\
+    Proposed      & \textbf{91.3} & \textbf{9.8} & \textbf{2.4} \\
+    \bottomrule
+  \end{tabular}
+\end{table}

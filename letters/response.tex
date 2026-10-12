@@ -1,0 +1,89 @@
+% letters/response.tex: point-by-point response to the reviewers.
+% Build from the project root (make response, or latexmk -pdf letters/response.tex); the PDF lands at the root as response.pdf. Title, authors, and manuscript ID come from preamble/authors.tex.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\input{preamble/authors}
+
+\definecolor{revblue}{RGB}{0,0,200}
+
+% \reviewer{N} starts a reviewer section and restarts comment numbering, so comments come out as Comment N.1, N.2, ... matching the \resp{RN.k}{...} margin tags in the revised manuscript.
+\newcounter{reviewer}
+\newcounter{comment}
+\newcommand{\commentprefix}{}
+\newcommand{\reviewer}[1]{%
+  \setcounter{reviewer}{#1}\setcounter{comment}{0}%
+  \renewcommand{\commentprefix}{#1}%
+  \section*{Response to Reviewer~#1}}
+\newcommand{\associateeditor}{%
+  \setcounter{comment}{0}\renewcommand{\commentprefix}{AE}%
+  \section*{Response to the Associate Editor}}
+
+\newenvironment{rcomment}{%
+  \refstepcounter{comment}\par\medskip\noindent
+  \textbf{Comment \commentprefix.\thecomment:}\itshape\ }{\par}
+\newenvironment{answer}{%
+  \par\smallskip\noindent\textbf{Response:}\ }{\par\medskip}
+
+% Quote revised manuscript text, in blue like \rev{} in the paper.
+\newcommand{\quotepaper}[1]{\begin{quote}\color{revblue}#1\end{quote}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries Response to the Reviewers}\\[6pt]
+  Manuscript \PaperManuscriptID: ``\PaperTitle''\\
+  \PaperAuthorsPlain
+\end{center}
+
+\bigskip
+
+Dear Editor and Reviewers,
+
+We thank you for the careful reading of our manuscript and for the comments, which helped us improve it. Below we answer each comment in turn. Reviewer comments are in \textit{italics}, and text quoted from the revised manuscript is in {\color{revblue}blue}. In the revised manuscript, changes are marked in blue and each change made for a specific comment carries that comment's tag (e.g., R1.1) in the margin.
+
+\associateeditor
+
+\begin{rcomment}
+Summary comment from the Associate Editor.
+\end{rcomment}
+\begin{answer}
+Our reply, pointing to the specific changes listed below.
+\end{answer}
+
+\reviewer{1}
+
+\begin{rcomment}
+The motivation for the proposed method should be explained more clearly.
+\end{rcomment}
+\begin{answer}
+We agree and have rewritten the second paragraph of Section~I (page~1, tag R1.1). It now reads:
+\quotepaper{Changes made for a specific reviewer comment carry that comment's tag in the margin.}
+\end{answer}
+
+\begin{rcomment}
+Second comment from Reviewer~1.
+\end{rcomment}
+\begin{answer}
+Reply to the second comment.
+\end{answer}
+
+\reviewer{2}
+
+\begin{rcomment}
+First comment from Reviewer~2.
+\end{rcomment}
+\begin{answer}
+Reply to the first comment from Reviewer~2.
+\end{answer}
+
+\bigskip
+Sincerely,\\
+\PaperAuthorsPlain
+
+\end{document}

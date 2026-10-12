@@ -1,0 +1,71 @@
+% preamble/authors.tex
+% Single source of truth for the title, authors, and running header. \input from the preamble of main.tex, supplementary.tex, and every letter under letters/, so an affiliation change here updates every PDF. Load it AFTER hyperref (orcidlink pulls in hyperref itself).
+\usepackage{orcidlink}
+
+% ---- Paper ------------------------------------------------------------------
+\newcommand{\PaperTitle}{A Template for IEEE Publications}
+\newcommand{\PaperShortTitle}{A Template for IEEE Publications}
+\newcommand{\PaperVenue}{IEEE Transactions on XXX}   % or the conference name
+\newcommand{\PaperManuscriptID}{TXXX-2026-XXXX}
+\newcommand{\PaperKeywords}{IEEE, IEEEtran, journal, conference, LaTeX, template}
+
+% ---- Authors ----------------------------------------------------------------
+% Type each author's details once here. Both author-block layouts below (journal and conference) are built from these. To add a fourth author, copy one set as \AuthorD..., then add it to both branches of \PaperAuthors and to \PaperAuthorsPlain. Replace the 0000-... placeholders with real ORCID iDs.
+\newcommand{\AuthorA}{First~A.~Author}
+\newcommand{\AuthorAOrcid}{0000-0000-0000-0000}
+\newcommand{\AuthorAMember}{Member,~IEEE}
+\newcommand{\AuthorADept}{Department of XXX}
+\newcommand{\AuthorAInst}{University of XXX}
+\newcommand{\AuthorACity}{City, ST 00000 USA}
+\newcommand{\AuthorAEmail}{first.author@example.edu}
+
+\newcommand{\AuthorB}{Second~B.~Author}
+\newcommand{\AuthorBOrcid}{0000-0000-0000-0000}
+\newcommand{\AuthorBMember}{Senior~Member,~IEEE}
+\newcommand{\AuthorBDept}{Department of XXX}
+\newcommand{\AuthorBInst}{University of XXX}
+\newcommand{\AuthorBCity}{City, ST 00000 USA}
+\newcommand{\AuthorBEmail}{second.author@example.edu}
+
+\newcommand{\AuthorC}{Third~C.~Author}
+\newcommand{\AuthorCOrcid}{0000-0000-0000-0000}
+\newcommand{\AuthorCMember}{Fellow,~IEEE}
+\newcommand{\AuthorCDept}{Department of XXX}
+\newcommand{\AuthorCInst}{University of XXX}
+\newcommand{\AuthorCCity}{City, ST 00000 USA}
+\newcommand{\AuthorCEmail}{third.author@example.edu}
+
+% Plain-text list for the PDF Info dictionary and the letters.
+\newcommand{\PaperAuthorsPlain}{\AuthorA, \AuthorB, and \AuthorC}
+\newcommand{\PaperCorrespondingAuthor}{\AuthorA}
+\newcommand{\PaperCorrespondingEmail}{\AuthorAEmail}
+
+% ---- Author block -----------------------------------------------------------
+% Journal: one author line with memberships, plus footnotes for dates, funding, and affiliations. Conference: side-by-side name/affiliation blocks and no footnotes (conferences put funding in the Acknowledgment). The \if lives inside the macro so the article-class letters can still \input this file.
+\newcommand{\PaperAuthors}{%
+  \ifCLASSOPTIONconference
+    \author{%
+      \IEEEauthorblockN{\AuthorA\,\orcidlink{\AuthorAOrcid}}
+      \IEEEauthorblockA{\textit{\AuthorADept}\\ \textit{\AuthorAInst}\\ \AuthorACity\\ \AuthorAEmail}
+      \and
+      \IEEEauthorblockN{\AuthorB\,\orcidlink{\AuthorBOrcid}}
+      \IEEEauthorblockA{\textit{\AuthorBDept}\\ \textit{\AuthorBInst}\\ \AuthorBCity\\ \AuthorBEmail}
+      \and
+      \IEEEauthorblockN{\AuthorC\,\orcidlink{\AuthorCOrcid}}
+      \IEEEauthorblockA{\textit{\AuthorCDept}\\ \textit{\AuthorCInst}\\ \AuthorCCity\\ \AuthorCEmail}%
+    }%
+  \else
+    \author{\AuthorA\,\orcidlink{\AuthorAOrcid},~\IEEEmembership{\AuthorAMember}, \AuthorB\,\orcidlink{\AuthorBOrcid},~\IEEEmembership{\AuthorBMember}, and~\AuthorC\,\orcidlink{\AuthorCOrcid},~\IEEEmembership{\AuthorCMember}%
+      \thanks{Manuscript received Month DD, YYYY; revised Month DD, YYYY; accepted Month DD, YYYY. This work was supported in part by XXX under Grant XXXXX. \emph{(Corresponding author: \PaperCorrespondingAuthor.)}}%
+      \thanks{\AuthorA{} is with the \AuthorADept, \AuthorAInst, \AuthorACity{} (e-mail: \AuthorAEmail).}%
+      \thanks{\AuthorB{} is with the \AuthorBDept, \AuthorBInst, \AuthorBCity{} (e-mail: \AuthorBEmail).}%
+      \thanks{\AuthorC{} is with the \AuthorCDept, \AuthorCInst, \AuthorCCity{} (e-mail: \AuthorCEmail).}%
+    }%
+  \fi
+}
+
+% ---- Running header (journal only; IEEEtran prints none in conference mode) --
+\newcommand{\PaperHeader}{%
+  \markboth{\PaperVenue,~Vol.~XX, No.~X, Month~YYYY}%
+           {Author \MakeLowercase{\textit{et al.}}: \PaperShortTitle}%
+}

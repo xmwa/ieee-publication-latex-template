@@ -1,0 +1,43 @@
+% supplementary.tex: supplementary material, S-numbered so the main paper can cite "Fig. S1", "Eq. (S1)", "Table S-I", and "Section S-I" unambiguously.
+% Shares preamble/authors.tex, bib/refs.bib, and figures/ with main.tex; its own sections and tables are in supplementary/.
+\input{preamble/venue}
+\documentclass[\PaperMode]{IEEEtran}
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\input{preamble/authors}
+\input{preamble/revision}
+
+\hypersetup{
+  pdftitle={Supplementary Material for \PaperTitle},
+  pdfauthor={\PaperAuthorsPlain},
+  pdfkeywords={\PaperKeywords},
+}
+
+% S-prefixed numbering (IEEE convention: sections and tables Roman, figures and equations arabic).
+\renewcommand{\thesection}{S-\Roman{section}}
+\renewcommand{\thetable}{S-\Roman{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\begin{document}
+
+\title{Supplementary Material for\\ ``\PaperTitle''}
+\PaperAuthors
+\PaperHeader
+
+\maketitle
+
+% The content lives in supplementary/, one file per section (and per table), the same way main.tex pulls in sections/. Paths stay root-relative, so this entry file must remain at the project root.
+\input{supplementary/S1_derivations}
+\input{supplementary/S2_experiments}
+
+\bibliographystyle{IEEEtran}
+\bibliography{bib/refs}
+
+\end{document}

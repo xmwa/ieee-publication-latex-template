@@ -1,0 +1,33 @@
+# Claude Code (local only, never pushed)
+CLAUDE.md
+.claude/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.xdv
+
+# Built PDFs at the root only (PDF figures under figures/ stay tracked)
+/*.pdf
+
+# latexdiff output and submission snapshots
+/diff*.tex
+/submitted*/
+/submitted*.zip
+
+# OS / editor
+.DS_Store
+*~
+*.swp

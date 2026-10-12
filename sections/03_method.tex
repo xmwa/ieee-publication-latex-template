@@ -1,0 +1,14 @@
+\section{Proposed Method}
+\label{sec:method}
+
+Describe the proposed method here. Define every symbol at its first use and number every equation you refer to later, for example
+\begin{equation}
+  y(t) = \int_{0}^{t} h(t-\tau)\, x(\tau)\, d\tau ,
+  \label{eq:convolution}
+\end{equation}
+where $x(t)$ is the input, $h(t)$ is the impulse response, and $y(t)$ is the output. Refer to it as \eqref{eq:convolution}, or as Eq.~\eqref{eq:convolution} at the start of a sentence.
+
+Cite prior work with \verb|\cite|, as in the IEEEtran guide~\cite{shell2015ieeetran}. The \texttt{cite} package sorts and compresses multiple citations, so \verb|\cite{a,b,c}| prints as a range. Add entries to \texttt{bib/refs.bib}; the IEEEtran bibliography style formats them in IEEE style.
+
+\subsection{Subsections}
+IEEE journals use up to three levels of headings: \verb|\section|, \verb|\subsection|, and \verb|\subsubsection|. Keep each section in its own file so that \texttt{latexdiff} shows changes per section during a revision.

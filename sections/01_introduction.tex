@@ -1,0 +1,11 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\IEEEPARstart{T}{his} template is a starting point for a manuscript submitted to an IEEE journal or conference; the venue type is set in \texttt{preamble/venue.tex}. Replace this text with the motivation for the work, a short review of prior art, and a clear statement of what is new. Most IEEE papers close the introduction with a numbered list of contributions and a one-paragraph outline of the rest of the paper.
+
+The source is split so that co-authors can work on different parts at the same time. The title, author list, affiliations, and running header are defined once in \texttt{preamble/authors.tex} and shared by the main paper, the supplementary material, and the letters. Each section of the body is its own file under \texttt{sections/}, each table is its own file under \texttt{tables/}, figures go in \texttt{figures/}, and all references live in \texttt{bib/refs.bib}. The layout and the revision workflow follow the setup described in~\cite{wang2026oneprompt}.
+
+% Revision-markup demo. Delete this paragraph once you start writing.
+During a revision, wrap changed text in the macros from \texttt{preamble/revision.tex}: \rev{revised text shows up in blue}\del{, deleted text is struck through in red}, and \resp{R1.1}{changes made for a specific reviewer comment carry that comment's tag in the margin}.\todo{notes to co-authors look like this} All of them disappear in the clean copy.
+
+The rest of the paper is organized as follows. Section~\ref{sec:related} reviews related work. Section~\ref{sec:method} describes the proposed method, and Section~\ref{sec:experiments} reports the experiments. Section~\ref{sec:discussion} discusses the results, and Section~\ref{sec:conclusion} concludes the paper.

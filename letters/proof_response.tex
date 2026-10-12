@@ -1,0 +1,60 @@
+% letters/proof_response.tex: reply to the production editor's galley proof.
+% Answer every author query (AQ1, AQ2, ...) with a page/line reference into the proof, then list typesetting errors you spotted yourself. Build with `make letters` from the project root.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\input{preamble/authors}
+
+\definecolor{revblue}{RGB}{0,0,200}
+
+% \query{page/line in the proof}{query text}, then \reply{answer}.
+\newcounter{aq}
+\newcommand{\query}[2]{%
+  \refstepcounter{aq}\par\medskip\noindent
+  \textbf{AQ\theaq} (#1): \textit{#2}\par}
+\newcommand{\reply}[1]{\noindent\textbf{Reply:} #1\par}
+% Corrected text, shown in blue.
+\newcommand{\corrected}[1]{{\color{revblue}#1}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries Reply to Author Queries}\\[6pt]
+  Manuscript \PaperManuscriptID: ``\PaperTitle''\\
+  \PaperVenue
+\end{center}
+
+\bigskip
+
+Dear Production Editor,
+
+Thank you for the proof. Our replies to the author queries are below, followed by a few corrections we found while checking it. Page and line numbers refer to the proof PDF.
+
+\section*{Author Queries}
+
+\query{p.~1, author block}{Please confirm that the author names and affiliations are correct.}
+\reply{Confirmed, no changes.}
+
+\query{p.~3, line~12, left column}{Please provide the page range for reference~[1].}
+\reply{Please change the reference to: \corrected{M. Shell, ``How to use the IEEEtran \LaTeX\ class,'' 2015, pp.~1--26.}}
+
+\query{p.~5, line~4, right column}{Please define the acronym XXX at first use.}
+\reply{Please change ``XXX'' to \corrected{``extended XXX (XXX)''}.}
+
+\section*{Additional Corrections}
+
+\begin{enumerate}
+  \item p.~2, line~18, left column: change ``teh'' to \corrected{``the''}.
+  \item p.~4, Eq.~(3): the subscript should read \corrected{$x_{i}$}, not $x_{1}$.
+\end{enumerate}
+
+Sincerely,\\
+\PaperCorrespondingAuthor\\
+E-mail: \href{mailto:\PaperCorrespondingEmail}{\PaperCorrespondingEmail}
+
+\end{document}
