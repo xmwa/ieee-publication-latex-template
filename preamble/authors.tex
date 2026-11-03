@@ -8,6 +8,10 @@
 \newcommand{\PaperVenue}{IEEE Transactions on XXX}   % or the conference name
 \newcommand{\PaperManuscriptID}{TXXX-2026-XXXX}
 \newcommand{\PaperKeywords}{IEEE, IEEEtran, journal, conference, LaTeX, template}
+% Project page, code, or data. In journal mode it becomes the last first-page footnote; leave it empty, \newcommand{\PaperDataURL}{}, to drop that footnote. Conference papers have no footnotes, so put the link in the text there.
+\newcommand{\PaperDataURL}{https://github.com/XXX/XXX}
+% The link as typeset. \detokenize keeps _ and ~ in the URL intact (a URL with % or # will not work here).
+\newcommand{\PaperDataURLLink}{\expandafter\url\expandafter{\detokenize\expandafter{\PaperDataURL}}}
 
 % ---- Authors ----------------------------------------------------------------
 % Type each author's details once here. Both author-block layouts below (journal and conference) are built from these. To add a fourth author, copy one set as \AuthorD..., then add it to both branches of \PaperAuthors and to \PaperAuthorsPlain. Replace the 0000-... placeholders with real ORCID iDs.
@@ -60,6 +64,7 @@
       \thanks{\AuthorA{} is with the \AuthorADept, \AuthorAInst, \AuthorACity{} (e-mail: \AuthorAEmail).}%
       \thanks{\AuthorB{} is with the \AuthorBDept, \AuthorBInst, \AuthorBCity{} (e-mail: \AuthorBEmail).}%
       \thanks{\AuthorC{} is with the \AuthorCDept, \AuthorCInst, \AuthorCCity{} (e-mail: \AuthorCEmail).}%
+      \if\relax\detokenize\expandafter{\PaperDataURL}\relax\else\thanks{Code and data are available at \PaperDataURLLink.}\fi
     }%
   \fi
 }

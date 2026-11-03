@@ -1,5 +1,7 @@
 % supplementary.tex: supplementary material, S-numbered so the main paper can cite "Fig. S1", "Eq. (S1)", "Table S-I", and "Section S-I" unambiguously.
 % Shares preamble/authors.tex, bib/refs.bib, and figures/ with main.tex; its own sections and tables are in supplementary/.
+% Revision marks: 0 = marked, 1 = clean (same switch as main.tex; the command line wins over this line).
+\ifdefined\CleanCopy\else\def\CleanCopy{0}\fi
 \input{preamble/venue}
 \documentclass[\PaperMode]{IEEEtran}
 
@@ -25,6 +27,12 @@
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\theequation}{S\arabic{equation}}
 
+% Wider number boxes in the table of contents: IEEEtran's are sized for "VIII", and "S-VIII" runs into the section title.
+\makeatletter
+\def\l@section#1#2{\addpenalty{\@secpenalty}\addvspace{1.0em plus 1pt}\@tempdima 3.7em \begingroup \parindent \z@ \rightskip \@pnumwidth \parfillskip-\@pnumwidth {\bfseries\leavevmode #1}\hfil\hbox to\@pnumwidth{\hss #2}\par\endgroup}
+\def\l@subsection{\@dottedtocline{2}{1.0em}{4.9em}}
+\makeatother
+
 \begin{document}
 
 \title{Supplementary Material for\\ ``\PaperTitle''}
@@ -33,10 +41,14 @@
 
 \maketitle
 
+% Long supplement? Uncomment for a table of contents.
+% {\small\tableofcontents}
+
 % The content lives in supplementary/, one file per section (and per table), the same way main.tex pulls in sections/. Paths stay root-relative, so this entry file must remain at the project root.
 \input{supplementary/S1_derivations}
 \input{supplementary/S2_experiments}
 
+% Delete these two lines if the supplement cites nothing (an empty bibliography is a compile error) or if your venue wants every reference in the main paper; then cite in plain text here ("Shell (2015)"), since a \cite left in supplementary/ prints as [?].
 \bibliographystyle{IEEEtran}
 \bibliography{bib/refs}
 

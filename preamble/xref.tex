@@ -1,0 +1,12 @@
+% preamble/xref.tex: references from the main paper into the supplementary material. \input from main.tex BEFORE hyperref.
+% Write Table~\ref{supp:tab:ablation} or Section~\ref{supp:sec:experiments} in the main paper, never a hard-coded "Table S-I": the numbers are read from supplementary.aux, so they follow the supplement when it is reordered. Labels inside supplementary/ are written without the prefix.
+% supplementary.aux has to exist when main.tex is compiled. latexmkrc builds the supplement first when the .aux is missing or out of date (locally and on Overleaf), `make main` does the same, and `make snapshot` copies supplementary.aux into the bundle for submission systems that only compile main.tex.
+\usepackage{xr-hyper}
+
+% Report supplementary.tex and supplementary.aux to latexmk as dependencies, so latexmkrc's rule can rebuild the supplement when they change. This is the method Overleaf documents for xr.
+\makeatletter
+\newcommand*{\addFileDependency}[1]{\typeout{(#1)}\@addtofilelist{#1}\IfFileExists{#1}{}{\typeout{No file #1.}}}
+\makeatother
+\newcommand*{\SuppDocument}[1]{\externaldocument[supp:]{#1}\addFileDependency{#1.tex}\addFileDependency{#1.aux}}
+
+\SuppDocument{supplementary}

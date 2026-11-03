@@ -13,6 +13,7 @@
 \newcounter{reviewer}
 \newcounter{comment}
 \newcommand{\commentprefix}{}
+\renewcommand{\theHcomment}{\commentprefix.\arabic{comment}}   % unique hyperref anchor per comment (AE.1, 1.1, 2.1, ...)
 \newcommand{\reviewer}[1]{%
   \setcounter{reviewer}{#1}\setcounter{comment}{0}%
   \renewcommand{\commentprefix}{#1}%

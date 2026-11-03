@@ -1,8 +1,8 @@
 % main.tex: IEEE manuscript (journal or conference, set in preamble/venue.tex).
 % Title, authors, and header live in preamble/authors.tex; the body lives in sections/, one file per section.
 %
-% Camera-ready without revision marks: run `make cleancopy`, or (on Overleaf) uncomment the next line.
-% \def\CleanCopy{1}
+% Revision marks: 0 = marked (blue/red text, margin tags), 1 = clean camera-ready copy. A command-line setting wins over this line (`make cleancopy`, or latexmk -usepretex="\def\CleanCopy{1}"), so you only need to edit it on Overleaf.
+\ifdefined\CleanCopy\else\def\CleanCopy{0}\fi
 \input{preamble/venue}
 \documentclass[\PaperMode]{IEEEtran}
 % Conference camera-ready: some conferences require the IEEE copyright line at the bottom of the first column. Uncomment the next line here and the \IEEEpubid line before \maketitle, using the code from your copyright form.
@@ -13,6 +13,7 @@
 \usepackage{graphicx}
 \graphicspath{{figures/}}
 \usepackage{booktabs}
+\input{preamble/xref}   % \ref{supp:...} into the supplementary material; must come before hyperref
 \usepackage[hidelinks]{hyperref}
 
 \input{preamble/authors}
@@ -53,12 +54,14 @@ This is the abstract. State the problem, the approach, and the main quantitative
 \section*{Acknowledgment}
 The authors would like to thank XXX for helpful discussions.
 
+% Some venues also ask for a statement such as: \section*{Conflict of Interest} The authors declare no conflict of interest.
+
 \bibliographystyle{IEEEtran}
 \bibliography{bib/refs}
 
-% Biographies are a journal requirement; conference papers have none.
+% Biographies are a journal requirement; conference papers have none. `make measure` swaps in full-length placeholder bios with photos to check the page budget (see sections/biographies_measure.tex).
 \ifCLASSOPTIONconference\else
-\input{sections/biographies}
+\ifdefined\MeasureBios \input{sections/biographies_measure}\else \input{sections/biographies}\fi
 \fi
 
 \end{document}
