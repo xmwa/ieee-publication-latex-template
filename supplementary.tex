@@ -1,7 +1,7 @@
 % supplementary.tex: supplementary material, S-numbered so the main paper can cite "Fig. S1", "Eq. (S1)", "Table S-I", and "Section S-I" unambiguously.
 % Shares preamble/authors.tex, bib/refs.bib, and figures/ with main.tex; its own sections and tables are in supplementary/.
-% Revision marks: 0 = marked, 1 = clean (same switch as main.tex; the command line wins over this line).
-\ifdefined\CleanCopy\else\def\CleanCopy{0}\fi
+% Revision marks: 1 = clean (default), 0 = marked; same switch as main.tex, and the command line wins over this line.
+\ifdefined\CleanCopy\else\def\CleanCopy{1}\fi
 \input{preamble/venue}
 \documentclass[\PaperMode]{IEEEtran}
 

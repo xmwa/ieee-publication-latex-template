@@ -14,30 +14,15 @@
 \newcommand{\PaperDataURLLink}{\expandafter\url\expandafter{\detokenize\expandafter{\PaperDataURL}}}
 
 % ---- Authors ----------------------------------------------------------------
-% Type each author's details once here. Both author-block layouts below (journal and conference) are built from these. To add a fourth author, copy one set as \AuthorD..., then add it to both branches of \PaperAuthors and to \PaperAuthorsPlain. Replace the 0000-... placeholders with real ORCID iDs.
-\newcommand{\AuthorA}{First~A.~Author}
-\newcommand{\AuthorAOrcid}{0000-0000-0000-0000}
-\newcommand{\AuthorAMember}{Member,~IEEE}
-\newcommand{\AuthorADept}{Department of XXX}
-\newcommand{\AuthorAInst}{University of XXX}
-\newcommand{\AuthorACity}{City, ST 00000 USA}
-\newcommand{\AuthorAEmail}{first.author@example.edu}
-
-\newcommand{\AuthorB}{Second~B.~Author}
-\newcommand{\AuthorBOrcid}{0000-0000-0000-0000}
-\newcommand{\AuthorBMember}{Senior~Member,~IEEE}
-\newcommand{\AuthorBDept}{Department of XXX}
-\newcommand{\AuthorBInst}{University of XXX}
-\newcommand{\AuthorBCity}{City, ST 00000 USA}
-\newcommand{\AuthorBEmail}{second.author@example.edu}
-
-\newcommand{\AuthorC}{Third~C.~Author}
-\newcommand{\AuthorCOrcid}{0000-0000-0000-0000}
-\newcommand{\AuthorCMember}{Fellow,~IEEE}
-\newcommand{\AuthorCDept}{Department of XXX}
-\newcommand{\AuthorCInst}{University of XXX}
-\newcommand{\AuthorCCity}{City, ST 00000 USA}
-\newcommand{\AuthorCEmail}{third.author@example.edu}
+% Each author's details (name, IEEE grade, ORCID, affiliation, e-mail, photo, biography) live in one record under authors/, so they are typed once. This file only picks the authors and their order: \AuthorSlot{A}{first} makes \AuthorA, \AuthorAOrcid, ... come from the record with key "first", and both author-block layouts below are built from those macros.
+% To add a fourth author: copy a record to authors/fourth_author.tex with a new key, \input it here, add \AuthorSlot{D}{fourth}, then add the author to both branches of \PaperAuthors, to \PaperAuthorsPlain, and \AuthorBio{fourth} to sections/biographies.tex.
+\usepackage{authors/authorinfo}
+\input{authors/first_author}
+\input{authors/second_author}
+\input{authors/third_author}
+\AuthorSlot{A}{first}
+\AuthorSlot{B}{second}
+\AuthorSlot{C}{third}
 
 % Plain-text list for the PDF Info dictionary and the letters.
 \newcommand{\PaperAuthorsPlain}{\AuthorA, \AuthorB, and \AuthorC}

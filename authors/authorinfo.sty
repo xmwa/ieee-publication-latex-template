@@ -1,0 +1,73 @@
+% authors/authorinfo.sty: one record per author, shared by the paper, the supplementary, and the letters.
+% Each record (authors/<name>.tex) calls \DefineAuthor{key}{field = value, ...}; put a value that contains a comma in braces.
+% Fields: name, member, orcid, dept, inst, city, email, photo, bio (the bio may have several paragraphs; separate them with a blank line).
+%   \AuthorSlot{A}{key}       defines \AuthorA, \AuthorAOrcid, \AuthorAMember, \AuthorADept, \AuthorAInst, \AuthorACity, \AuthorAEmail from the record, the macros preamble/authors.tex builds the author block from
+%   \AuthorField{key}{field}  one field, expandable (usable in \author, \thanks, \orcidlink, and PDF metadata)
+%   \AuthorBio{key}           the IEEE biography: photo, "Name (member) bio". With no photo file yet, a 1in x 1.25in placeholder box takes its place, so the page count is already realistic.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{authors/authorinfo}[2026/11/09 author records]
+\RequirePackage{graphicx}
+\ExplSyntaxOn
+\msg_new:nnn { authorinfo } { no-value } { Author~'#1':~field~'#2'~has~no~value. }
+\msg_new:nnn { authorinfo } { unknown } { Author~key~'#1'~is~not~defined~(missing~\DefineAuthor~or~\input~of~its~record?). }
+\msg_new:nnn { authorinfo } { no-photo } { Author~'#1':~photo~file~'#2'~not~found;~drawing~a~placeholder~box. }
+
+\cs_new_protected:Npn \__authorinfo_store:nnn #1#2#3
+  { \prop_gput:cnn { g__authorinfo_#1_prop } {#2} {#3} }
+
+\NewDocumentCommand \DefineAuthor { m +m }
+  {
+    \prop_gclear_new:c { g__authorinfo_#1_prop }
+    \keyval_parse:nnn
+      { \msg_error:nnnn { authorinfo } { no-value } {#1} }
+      { \__authorinfo_store:nnn {#1} }
+      {#2}
+  }
+
+\NewExpandableDocumentCommand \AuthorField { m m }
+  { \prop_item:cn { g__authorinfo_#1_prop } {#2} }
+
+\NewDocumentCommand \AuthorSlot { m m }
+  {
+    \prop_if_exist:cF { g__authorinfo_#2_prop } { \msg_error:nnn { authorinfo } { unknown } {#2} }
+    \cs_set:cpn { Author#1 }       { \AuthorField {#2} { name } }
+    \cs_set:cpn { Author#1Orcid }  { \AuthorField {#2} { orcid } }
+    \cs_set:cpn { Author#1Member } { \AuthorField {#2} { member } }
+    \cs_set:cpn { Author#1Dept }   { \AuthorField {#2} { dept } }
+    \cs_set:cpn { Author#1Inst }   { \AuthorField {#2} { inst } }
+    \cs_set:cpn { Author#1City }   { \AuthorField {#2} { city } }
+    \cs_set:cpn { Author#1Email }  { \AuthorField {#2} { email } }
+  }
+
+% The photo, or a placeholder box of the same 1in x 1.25in size when the field is empty or the file is missing (a missing file also gets a warning, since that is usually a typo).
+\cs_new_protected:Npn \__authorinfo_photo:n #1
+  {
+    \tl_set:Ne \l_tmpa_tl { \prop_item:cn { g__authorinfo_#1_prop } { photo } }
+    \tl_if_blank:VTF \l_tmpa_tl
+      { \__authorinfo_photo_box: }
+      {
+        \file_if_exist:VTF \l_tmpa_tl
+          { \__authorinfo_graphic:V \l_tmpa_tl }
+          {
+            \msg_warning:nnee { authorinfo } { no-photo } {#1} { \tl_to_str:V \l_tmpa_tl }
+            \__authorinfo_photo_box:
+          }
+      }
+  }
+\cs_new_protected:Npn \__authorinfo_graphic:n #1
+  { \includegraphics [ width=1in, height=1.25in, clip, keepaspectratio ] {#1} }
+\cs_generate_variant:Nn \__authorinfo_graphic:n { V }
+\cs_new_protected:Npn \__authorinfo_photo_box:
+  { \fbox { \parbox [ c ] [ \dim_eval:n { 1.25in - 2\fboxsep - 2\fboxrule } ] [ c ] { \dim_eval:n { 1in - 2\fboxsep - 2\fboxrule } } { \centering Photo } } }
+
+\NewDocumentCommand \AuthorBio { m }
+  {
+    \prop_if_exist:cF { g__authorinfo_#1_prop } { \msg_error:nnn { authorinfo } { unknown } {#1} }
+    \begin { IEEEbiography } [ { \__authorinfo_photo:n {#1} } ] { \prop_item:cn { g__authorinfo_#1_prop } { name } }
+      \tl_if_blank:eF { \prop_item:cn { g__authorinfo_#1_prop } { member } }
+        { ( \prop_item:cn { g__authorinfo_#1_prop } { member } ) \c_space_tl }
+      \prop_item:cn { g__authorinfo_#1_prop } { bio }
+    \end { IEEEbiography }
+  }
+\ExplSyntaxOff
+\endinput

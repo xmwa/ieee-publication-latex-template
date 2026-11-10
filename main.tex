@@ -1,8 +1,8 @@
 % main.tex: IEEE manuscript (journal or conference, set in preamble/venue.tex).
 % Title, authors, and header live in preamble/authors.tex; the body lives in sections/, one file per section.
 %
-% Revision marks: 0 = marked (blue/red text, margin tags), 1 = clean camera-ready copy. A command-line setting wins over this line (`make cleancopy`, or latexmk -usepretex="\def\CleanCopy{1}"), so you only need to edit it on Overleaf.
-\ifdefined\CleanCopy\else\def\CleanCopy{0}\fi
+% Revision marks: 1 = clean copy (the default: what you submit, and what the page count is measured on), 0 = marked (blue/red text, margin tags) for a revision round. A command-line setting wins over this line (`make marked`, or latexmk -usepretex="\def\CleanCopy{0}"), so you only need to edit it on Overleaf.
+\ifdefined\CleanCopy\else\def\CleanCopy{1}\fi
 \input{preamble/venue}
 \documentclass[\PaperMode]{IEEEtran}
 % Conference camera-ready: some conferences require the IEEE copyright line at the bottom of the first column. Uncomment the next line here and the \IEEEpubid line before \maketitle, using the code from your copyright form.
@@ -59,9 +59,9 @@ The authors would like to thank XXX for helpful discussions.
 \bibliographystyle{IEEEtran}
 \bibliography{bib/refs}
 
-% Biographies are a journal requirement; conference papers have none. `make measure` swaps in full-length placeholder bios with photos to check the page budget (see sections/biographies_measure.tex).
+% Biographies are a journal requirement; conference papers have none.
 \ifCLASSOPTIONconference\else
-\ifdefined\MeasureBios \input{sections/biographies_measure}\else \input{sections/biographies}\fi
+\input{sections/biographies}
 \fi
 
 \end{document}
