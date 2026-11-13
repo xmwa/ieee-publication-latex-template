@@ -3,6 +3,7 @@
 % Fields: name, member, orcid, dept, inst, city, email, photo, bio (the bio may have several paragraphs; separate them with a blank line).
 %   \AuthorSlot{A}{key}       defines \AuthorA, \AuthorAOrcid, \AuthorAMember, \AuthorADept, \AuthorAInst, \AuthorACity, \AuthorAEmail from the record, the macros preamble/authors.tex builds the author block from
 %   \AuthorField{key}{field}  one field, expandable (usable in \author, \thanks, \orcidlink, and PDF metadata)
+%   \AuthorMembership{text}  ", Grade" for the journal author line (\IEEEmembership), or nothing when the record has no member field
 %   \AuthorBio{key}           the IEEE biography: photo, "Name (member) bio". With no photo file yet, a 1in x 1.25in placeholder box takes its place, so the page count is already realistic.
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{authors/authorinfo}[2026/11/09 author records]
@@ -26,6 +27,9 @@
 
 \NewExpandableDocumentCommand \AuthorField { m m }
   { \prop_item:cn { g__authorinfo_#1_prop } {#2} }
+
+\NewDocumentCommand \AuthorMembership { m }
+  { \tl_if_blank:eF {#1} { , \nobreakspace \IEEEmembership {#1} } }
 
 \NewDocumentCommand \AuthorSlot { m m }
   {

@@ -127,7 +127,7 @@ Every author has one record in `authors/` with their name, IEEE grade, ORCID, af
 ```latex
 \DefineAuthor{first}{
   name   = First~A.~Author,
-  member = {Member,~IEEE},          % braces around a value with a comma
+  member = {Member,~IEEE},          % braces around a value with a comma; {} for no IEEE grade
   orcid  = 0000-0000-0000-0000,
   ...
   photo  = authors/first_author.jpg, % 1in x 1.25in; leave empty for a placeholder box
