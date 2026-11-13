@@ -90,7 +90,7 @@ All commands run from the project root, and every PDF lands in the root.
 
 Plain `make` builds the clean copy: no revision marks, so `main.pdf` is what you submit and what the page limit applies to. Every main-paper target builds the supplement first, because the paper reads its `\ref{supp:...}` numbers from `supplementary.aux`. `distclean` never touches `submitted*/` or `preview/`. `make snapshot` refuses to overwrite an existing snapshot.
 
-Requirements: a TeX distribution with `pdflatex`, `latexmk`, `bibtex`, and the `IEEEtran`, `orcidlink`, `ulem`, `marginnote`, and `hyperref` (for `xr-hyper`) packages (all in TeX Live; on TinyTeX, `tlmgr install` anything missing). `latexdiff` for `make diff`, and `make` and `zip` for the Makefile.
+Requirements: a TeX distribution with `pdflatex`, `latexmk`, `bibtex`, and the `IEEEtran`, `orcidlink`, `ulem`, `marginnote`, and `hyperref` (for `xr-hyper`) packages (all in TeX Live; on TinyTeX, `tlmgr install` anything missing, typically including `courier`, the typewriter font for `\texttt` and URLs). `latexdiff` for `make diff`, and `make` and `zip` for the Makefile.
 
 ## Revision workflow
 
