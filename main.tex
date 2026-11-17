@@ -21,7 +21,7 @@
 
 \hypersetup{
   pdftitle={\PaperTitle},
-  pdfauthor={\PaperAuthorsPlain},
+  pdfauthor={\PaperPdfAuthor},   % empty in anonymous mode
   pdfkeywords={\PaperKeywords},
 }
 
@@ -51,17 +51,20 @@ This is the abstract. State the problem, the approach, and the main quantitative
 \input{sections/05_discussion}
 \input{sections/06_conclusion}
 
+% Acknowledgments name people and grants, so anonymous mode leaves them out (preamble/venue.tex).
+\ifAnonymous\else
 \section*{Acknowledgment}
 The authors would like to thank XXX for helpful discussions.
+\fi
 
 % Some venues also ask for a statement such as: \section*{Conflict of Interest} The authors declare no conflict of interest.
 
 \bibliographystyle{IEEEtran}
 \bibliography{bib/refs}
 
-% Biographies are a journal requirement; conference papers have none.
-\ifCLASSOPTIONconference\else
+% Biographies are a journal requirement; conference papers and anonymous review copies have none.
+\ifCLASSOPTIONconference\else\ifAnonymous\else
 \input{sections/biographies}
-\fi
+\fi\fi
 
 \end{document}

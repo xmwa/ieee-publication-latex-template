@@ -1,10 +1,10 @@
 # IEEE Publication LaTeX Template
 
-A LaTeX project for IEEE journal and conference papers built on `IEEEtran`, with the parts that usually get improvised at the last minute already in place: S-numbered supplementary material that the paper references by label, one record per author (bio and photo included), a clean/marked revision switch, latexdiff, a realistic page count from the first build, and the letters you need at submission, revision, and proof stage.
+A LaTeX project for IEEE journal and conference papers built on `IEEEtran`, with the parts that usually get improvised at the last minute already in place: S-numbered supplementary material that the paper references by label, one record per author (bio and photo included), a clean/marked revision switch, a double-anonymous review switch, latexdiff, a realistic page count from the first build, and the letters you need at submission, revision, and proof stage.
 
 ![Close-ups of the journal and conference author blocks, revision marks, response letter, and S-numbered supplementary](preview/overview.png)
 
-**Preview:** [journal paper](preview/main.pdf) · [with revision marks](preview/main-marked.pdf) · [conference paper](preview/main-conference.pdf) · [supplementary](preview/supplementary.pdf) · [response to reviewers](preview/response.pdf) · [cover letter](preview/cover_letter.pdf) · [proof response](preview/proof_response.pdf)
+**Preview:** [journal paper](preview/main.pdf) · [with revision marks](preview/main-marked.pdf) · [anonymous review copy](preview/main-anon.pdf) · [conference paper](preview/main-conference.pdf) · [supplementary](preview/supplementary.pdf) · [response to reviewers](preview/response.pdf) · [cover letter](preview/cover_letter.pdf) · [proof response](preview/proof_response.pdf)
 
 Built from the one-prompt setup described in [One Prompt, One Complete IEEE Transactions Project With Claude Code](https://blog.wangxm.com/2026/07/ieee-transactions-project-claude-code-one-prompt/), extended with a journal/conference switch.
 
@@ -46,7 +46,7 @@ The letters don't change with the mode. `response.tex` works as a journal respon
 ├── supplementary.tex         # supplementary entry point: S-numbered (S-I, Fig. S1, Eq. (S1), Table S-I)
 ├── latexmkrc                 # builds the supplement before main.tex when its .aux is missing (also on Overleaf)
 ├── preamble/
-│   ├── venue.tex             # journal | conference switch (loaded before \documentclass)
+│   ├── venue.tex             # journal | conference switch and the double-anonymous switch (loaded before \documentclass)
 │   ├── authors.tex           # title, venue name, data URL; picks the authors and their order; author block, header
 │   ├── revision.tex          # \rev \del \todo \resp and the marked/clean switch
 │   └── xref.tex              # \ref{supp:...} from the paper into the supplement (xr-hyper)
@@ -82,8 +82,9 @@ All commands run from the project root, and every PDF lands in the root.
 | `make` | `main.pdf`, `supplementary.pdf`, `response.pdf` |
 | `make main` / `make supp` / `make response` | one of the above |
 | `make marked` | `main-marked.pdf` and `supplementary-marked.pdf`, with revision marks and margin tags shown |
+| `make anon` | `main-anon.pdf`, `supplementary-anon.pdf`, `response-anon.pdf`: double-anonymous review copies (see [Double-anonymous review](#double-anonymous-review)) |
 | `make letters` | `cover_letter.pdf`, `proof_response.pdf` |
-| `make preview` | refreshes `preview/`: journal, marked, and conference paper, supplementary, all three letters |
+| `make preview` | refreshes `preview/`: journal, marked, anonymous, and conference paper, supplementary, all three letters |
 | `make snapshot [ROUND=r1]` | `submitted/` (or `submitted_r1/`) plus a zip ready to upload, including the `.bbl` files, `supplementary.aux`, and the files behind a linked `authors/` |
 | `make diff [OLD=submitted_r1]` | `diff.pdf` and `diff-supp.pdf`, latexdiff of the snapshot against the current sources |
 | `make clean` / `make distclean` | remove build files / also remove the root PDFs |
@@ -141,11 +142,55 @@ The placeholder records ship with full-length (about 110-word) bios and photo-si
 
 **Writing several papers?** Keep one `authors/` folder for all of them and replace each paper's folder with a link to it (`ln -s ../authors authors`), so an affiliation or bio is updated once. Overleaf and submission systems can't follow links, so upload real files there; `make snapshot` copies the files behind the link into the bundle. Don't put real records in a public repository.
 
+## Double-anonymous review
+
+Some IEEE journals (TETCI, for example) and many conferences review double-anonymously: the PDF the reviewers get must not identify the authors. One line in `preamble/venue.tex` switches the whole project:
+
+```latex
+\providecommand{\Anonymous}{0}   % 0 | 1
+```
+
+With `1`, every build of `main.tex` and `supplementary.tex` (including `make marked` and `make diff`) is anonymous, and nothing in the source has to be deleted: the author records, the Acknowledgment, and the biographies are still there for the final version. `make anon` builds anonymous copies (`main-anon.pdf`, `supplementary-anon.pdf`, `response-anon.pdf`) without touching the switch. For an anonymous marked copy without editing the switch: `latexmk -pdf -usepretex='\def\Anonymous{1}\def\CleanCopy{0}' main.tex`.
+
+What anonymous mode hides:
+
+- the author block: one line, "Anonymous Authors", with no affiliations, ORCID iDs, IEEE grades, or e-mail addresses (journal and conference layouts);
+- every first-page footnote: received/revised dates, funding and grant numbers, corresponding author, affiliations, and the `\PaperDataURL` link;
+- the Acknowledgment and the biographies;
+- the running header, which shows only the short title instead of the venue line and "Author *et al.*";
+- the PDF metadata: `pdfauthor` is empty (the template writes no XMP);
+- in `letters/response.tex`, the author names, which become "Anonymous Authors" and "The Authors", since the response goes to the reviewers.
+
+The cover letter goes to the editor only, so it keeps the names by default. If your venue wants it anonymous too, set `\CoverLetterAnonymous` to `1` near the top of `letters/cover_letter.tex`. The proof response is written after acceptance and is always named.
+
+The template can't find identifying text you write yourself, so mark it:
+
+```latex
+\anon{In our earlier work~\cite{smith2024}}{In~\cite{smith2024}}, ...   % \anon{named text}{neutral text}
+Code: \anonurl{https://github.com/your-lab/project}                      % "[link hidden for review]" when anonymous
+```
+
+`\anonurl` takes any URL, including `%`, `#`, and `_`, but like `\url` it can't go inside another command's argument.
+
+### Before you submit an anonymous copy
+
+1. Build with the switch on and read the first page: "Anonymous Authors", no footnotes, a header with only the short title.
+2. Check the metadata: `pdfinfo main.pdf | grep -i author` must show an empty Author field (also for `supplementary.pdf`).
+3. Search the sources for anything that gives you away. Fill in your own names, domain, institution, lab, and grant numbers:
+   ```sh
+   grep -rniE "surname1|surname2|@your-domain|your university|your lab|grant|our (earlier|previous|prior) work|we (previously|recently|earlier)" sections supplementary tables bib
+   ```
+   Cite your own papers in the third person ("Smith *et al.* [3] showed"), not "our earlier work [3]", or wrap the sentence in `\anon`.
+4. Search the PDF text the same way: `pdftotext main.pdf - | grep -niE "..."` with the same pattern.
+5. Check your figures: PDFs and images exported from plotting tools or Visio/draw.io can carry an author name in their own metadata (`pdfinfo figures/*.pdf`, `exiftool figures/*`). Look for names in figure text, axis labels, and file paths shown in screenshots too.
+6. Upload the PDF, not the source. The source bundle from `make snapshot` still contains `authors/`, `preamble/authors.tex`, and the biographies.
+7. For the final version, set the switch back to `0`.
+
 ## Overleaf
 
 `main.tex` and `supplementary.tex` stay at the root on purpose: submission systems compile an entry file from its own folder, and every path here is written from the root. All paths are relative to the project root, so the project can be uploaded to Overleaf as is. `main.tex` is picked as the main document. To build the supplementary or a letter, change the main document in the Overleaf menu. Overleaf runs `latexmk`, and the project's `latexmkrc` follows Overleaf's documented setup for `xr` so the supplement compiles first and `\ref{supp:...}` resolves (tested with local `latexmk`, not yet on Overleaf itself; if the references show "??" there, compile `supplementary.tex` once, then `main.tex`). If you edited files in `supplementary/`, compile `supplementary.tex` once before `main.tex`.
 
-Make targets don't run on Overleaf. The default build there is the clean copy; for the marked copy, change `\def\CleanCopy{1}` to `0` in the line at the top of `main.tex` (and `supplementary.tex`). Snapshots and latexdiff are local-only.
+Make targets don't run on Overleaf. For an anonymous copy there, set `\Anonymous` to `1` in `preamble/venue.tex`. The default build is the clean copy; for the marked copy, change `\def\CleanCopy{1}` to `0` in the line at the top of `main.tex` (and `supplementary.tex`). Snapshots and latexdiff are local-only.
 
 ## For AI agents
 
@@ -162,13 +207,15 @@ This section is for coding agents (Claude Code, Codex, Cursor, and so on) workin
 7. **Don't delete or overwrite `submitted*/`.** Those snapshots are the baseline for `make diff`.
 8. **Write one paragraph per line** in `.tex` files (no hard wrapping), including multi-line `%` comments.
 9. **Only `preview/*.pdf` is tracked.** Root PDFs and build files are git-ignored; don't commit them.
-10. **Never hard-code a supplementary number in the paper.** Write `\ref{supp:<label>}`; labels inside `supplementary/` have no prefix. Don't write "Table S-II" or "Section S-I" by hand.
+10. **In a double-anonymous paper, route identifying text through `\anon{...}{...}` and `\anonurl{...}`.** Never add names, affiliations, grants, or links outside them, and keep `\Anonymous` in `preamble/venue.tex` as the only switch.
+11. **Never hard-code a supplementary number in the paper.** Write `\ref{supp:<label>}`; labels inside `supplementary/` have no prefix. Don't write "Table S-II" or "Section S-I" by hand.
 
 ### Common tasks
 
 - **Change title or venue:** edit the matching macro in `preamble/authors.tex`. **Change an author's details, bio, or photo:** edit their record in `authors/`. Every PDF picks it up.
 - **Set or remove the code/data link:** `\PaperDataURL` in `preamble/authors.tex`. Journal mode prints it as the last first-page footnote; `\newcommand{\PaperDataURL}{}` drops the footnote. The URL must not contain `%` or `#`.
 - **Add a fourth author:** copy a record to `authors/fourth_author.tex` and give it a new key (`\DefineAuthor{fourth}{...}`). In `preamble/authors.tex`, `\input{authors/fourth_author}` and add `\AuthorSlot{D}{fourth}`, then add the author to both branches of `\PaperAuthors` (conference: another `\and` + `\IEEEauthorblockN`/`\IEEEauthorblockA`; journal: the author line and a `\thanks`) and to `\PaperAuthorsPlain`. Add `\AuthorBio{fourth}` to `sections/biographies.tex`.
+- **Prepare a double-anonymous submission:** set `\Anonymous` to `1` in `preamble/venue.tex`, wrap self-identifying text in `\anon`/`\anonurl`, rebuild, and run the checks in [Before you submit an anonymous copy](#before-you-submit-an-anonymous-copy).
 - **Switch to conference:** change `journal` to `conference` in `preamble/venue.tex`. Move the funding sentence into the Acknowledgment in `main.tex`.
 - **Add a section:** create `sections/0N_name.tex` starting with `\section{...}` and `\label{sec:name}`, then add `\input{sections/0N_name}` in `main.tex` in reading order. Renumber files if you insert one in the middle.
 - **Add a table:** create `tables/tab_name.tex` with a `table` environment, caption above, `\label{tab:name}`, and `\input` it from the section that first refers to it.
@@ -193,6 +240,7 @@ This section is for coding agents (Claude Code, Codex, Cursor, and so on) workin
 - Check that the last page's columns are balanced. If they aren't, add `\usepackage{flushend}` or `\IEEEtriggeratref{n}` before the bibliography.
 - Check the page count of `main.pdf` against the venue's limit, with a record (bio and photo) for every real author.
 - Run `pdfinfo main.pdf` to make sure the PDF title, author, and keywords are right.
+- Double-anonymous venue? Set `\Anonymous` to `1` in `preamble/venue.tex` and go through [Before you submit an anonymous copy](#before-you-submit-an-anonymous-copy). The anonymous copy has no biographies or acknowledgment, so it is shorter than the final paper; plan the page budget for the named version.
 - Upload `supplementary.aux` with the source (the `make snapshot` zip has it), or the paper's supplementary references print as "??".
 
 ## License

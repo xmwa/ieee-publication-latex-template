@@ -3,8 +3,9 @@
 #   make                  main.pdf, supplementary.pdf, response.pdf
 #   make main | supp | response
 #   make marked           main-marked.pdf and supplementary-marked.pdf: revision marks shown (blue/red text, margin tags), for the reviewers
+#   make anon             main-anon.pdf, supplementary-anon.pdf, response-anon.pdf: double-anonymous review copies (no author names anywhere, incl. PDF metadata). For a double-anonymous venue, set \Anonymous to 1 in preamble/venue.tex instead, so every build is anonymous
 #   make letters          cover_letter.pdf and proof_response.pdf (not in `all`)
-#   make preview          refresh preview/ (tracked in git, linked from the README): journal, marked, and conference paper, supplementary, all three letters
+#   make preview          refresh preview/ (tracked in git, linked from the README): journal, marked, anonymous, and conference paper, supplementary, all three letters
 #   make snapshot         freeze the submitted version into submitted/ + submitted.zip
 #   make snapshot ROUND=r1    ... into submitted_r1/ + submitted_r1.zip
 #   make diff             diff.pdf and diff-supp.pdf: latexdiff of submitted/ against the current main.tex and supplementary.tex
@@ -19,15 +20,16 @@ LATEXMK   ?= latexmk
 LATEXDIFF ?= latexdiff
 LMK        = $(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error -file-line-error
 MARKED     = -usepretex='\def\CleanCopy{0}'
+ANON       = -usepretex='\def\Anonymous{1}'
 
 ROUND   ?=
 SNAPDIR  = $(if $(ROUND),submitted_$(ROUND),submitted)
 OLD     ?= submitted
 SRCDIRS  = preamble authors sections tables supplementary figures bib
 
-JOBS = main main-conference main-marked supplementary supplementary-marked response cover_letter proof_response diff diff-supp
+JOBS = main main-conference main-marked main-anon supplementary supplementary-marked supplementary-anon response response-anon cover_letter proof_response diff diff-supp
 
-.PHONY: all main supp response marked letters preview snapshot diff clean distclean
+.PHONY: all main supp response marked anon letters preview snapshot diff clean distclean
 
 all: main supp response
 
@@ -45,6 +47,12 @@ marked: supp
 	$(LMK) -jobname=main-marked $(MARKED) main.tex
 	$(LMK) -jobname=supplementary-marked $(MARKED) supplementary.tex
 
+# Double-anonymous review copies. Combined with marked: latexmk -pdf -usepretex='\def\Anonymous{1}\def\CleanCopy{0}' main.tex
+anon: supp
+	$(LMK) -jobname=main-anon $(ANON) main.tex
+	$(LMK) -jobname=supplementary-anon $(ANON) supplementary.tex
+	$(LMK) -jobname=response-anon $(ANON) letters/response.tex
+
 letters:
 	$(LMK) letters/cover_letter.tex
 	$(LMK) letters/proof_response.tex
@@ -53,9 +61,10 @@ letters:
 preview: supp response letters
 	$(LMK) -usepretex='\def\PaperMode{journal}' main.tex
 	$(LMK) -jobname=main-marked -usepretex='\def\PaperMode{journal}\def\CleanCopy{0}' main.tex
+	$(LMK) -jobname=main-anon -usepretex='\def\PaperMode{journal}\def\Anonymous{1}' main.tex
 	$(LMK) -jobname=main-conference -usepretex='\def\PaperMode{conference}' main.tex
 	mkdir -p preview
-	cp main.pdf main-marked.pdf main-conference.pdf supplementary.pdf response.pdf cover_letter.pdf proof_response.pdf preview/
+	cp main.pdf main-marked.pdf main-anon.pdf main-conference.pdf supplementary.pdf response.pdf cover_letter.pdf proof_response.pdf preview/
 
 # A self-contained bundle of what was submitted. The .bbl files go in because submission systems compile the uploaded source but never run BibTeX, and because `make diff` needs the old bibliography to diff against. supplementary.aux goes in for the same reason: main.tex reads its \ref{supp:...} numbers from it. cp -L copies the files behind a linked folder (e.g. authors/ shared between papers), not the link. Refuses to overwrite an existing snapshot: it is the baseline for `make diff`.
 snapshot: main supp

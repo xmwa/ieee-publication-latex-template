@@ -4,6 +4,10 @@
 
 \usepackage[margin=1in]{geometry}
 \usepackage[hidelinks]{hyperref}
+% Double-anonymous review: the cover letter goes to the editor only, never to the reviewers, so by default it keeps the author names even when preamble/venue.tex sets \Anonymous to 1. Change the 0 to 1 if your venue wants an anonymous cover letter too.
+\newcommand{\CoverLetterAnonymous}{0}
+\ifnum\CoverLetterAnonymous=0 \def\Anonymous{0}\fi
+\input{preamble/venue}
 \input{preamble/authors}
 
 \setlength{\parindent}{0pt}
@@ -18,7 +22,7 @@ Editor-in-Chief, \PaperVenue
 
 Dear Prof.\ XXX,
 
-Please find enclosed our manuscript, ``\PaperTitle,'' by \PaperAuthorsPlain, which we submit for consideration as a regular paper in the \PaperVenue.
+Please find enclosed our manuscript, ``\PaperTitle,''\anon{ by \PaperAuthorsPlain,}{} which we submit for consideration as a regular paper in the \PaperVenue.
 
 State the problem in one or two sentences and why it matters to the readers of this journal. The main contributions of the manuscript are:
 \begin{enumerate}
@@ -32,9 +36,9 @@ Thank you for considering our manuscript.
 
 Sincerely,
 
-\PaperCorrespondingAuthor\\
+\anon{\PaperCorrespondingAuthor\\
 On behalf of all authors\\
 \AuthorADept, \AuthorAInst\\
-E-mail: \href{mailto:\PaperCorrespondingEmail}{\PaperCorrespondingEmail}
+E-mail: \href{mailto:\PaperCorrespondingEmail}{\PaperCorrespondingEmail}}{The Authors}
 
 \end{document}

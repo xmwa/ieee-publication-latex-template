@@ -5,6 +5,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
+\input{preamble/venue}     % the response goes to the reviewers, so it follows the double-anonymous switch
 \input{preamble/authors}
 
 \definecolor{revblue}{RGB}{0,0,200}
@@ -39,7 +40,7 @@
 \begin{center}
   {\Large\bfseries Response to the Reviewers}\\[6pt]
   Manuscript \PaperManuscriptID: ``\PaperTitle''\\
-  \PaperAuthorsPlain
+  \anon{\PaperAuthorsPlain}{Anonymous Authors}
 \end{center}
 
 \bigskip
@@ -85,6 +86,6 @@ Reply to the first comment from Reviewer~2.
 
 \bigskip
 Sincerely,\\
-\PaperAuthorsPlain
+\anon{\PaperAuthorsPlain}{The Authors}
 
 \end{document}

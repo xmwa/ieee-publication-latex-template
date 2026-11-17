@@ -2,6 +2,20 @@
 % Single source of truth for the title, authors, and running header. \input from the preamble of main.tex, supplementary.tex, and every letter under letters/, so an affiliation change here updates every PDF. Load it AFTER hyperref (orcidlink pulls in hyperref itself).
 \usepackage{orcidlink}
 
+% ---- Double-anonymous review --------------------------------------------------
+% \Anonymous comes from preamble/venue.tex (or the command line). A document that never loads venue.tex, such as letters/proof_response.tex, stays named.
+\newif\ifAnonymous
+\ifdefined\Anonymous \ifnum\Anonymous=1 \Anonymoustrue\fi\fi
+% \anon{identifying text}{neutral text} for anything in the body that would give the authors away, e.g. "\anon{our earlier work~\cite{x}}{the work of~\cite{x}}" or a lab or project name.
+\newcommand{\anon}[2]{\ifAnonymous#2\else#1\fi}
+% \anonurl{https://...} prints the link normally and "[link hidden for review]" in anonymous mode. Like \url, it can't go inside another command's argument.
+\ifAnonymous
+  \newcommand{\anonurl}{\begingroup\catcode`\%=12 \catcode`\#=12 \catcode`\_=12 \catcode`\~=12 \AnonUrlHide}
+  \newcommand{\AnonUrlHide}[1]{\endgroup[link hidden for review]}
+\else
+  \newcommand{\anonurl}{\url}
+\fi
+
 % ---- Paper ------------------------------------------------------------------
 \newcommand{\PaperTitle}{A Template for IEEE Publications}
 \newcommand{\PaperShortTitle}{A Template for IEEE Publications}
@@ -11,7 +25,7 @@
 % Project page, code, or data. In journal mode it becomes the last first-page footnote; leave it empty, \newcommand{\PaperDataURL}{}, to drop that footnote. Conference papers have no footnotes, so put the link in the text there.
 \newcommand{\PaperDataURL}{https://github.com/XXX/XXX}
 % The link as typeset. \detokenize keeps _ and ~ in the URL intact (a URL with % or # will not work here).
-\newcommand{\PaperDataURLLink}{\expandafter\url\expandafter{\detokenize\expandafter{\PaperDataURL}}}
+\newcommand{\PaperDataURLLink}{\anon{\expandafter\url\expandafter{\detokenize\expandafter{\PaperDataURL}}}{[link hidden for review]}}
 
 % ---- Authors ----------------------------------------------------------------
 % Each author's details (name, IEEE grade, ORCID, affiliation, e-mail, photo, biography) live in one record under authors/, so they are typed once. This file only picks the authors and their order: \AuthorSlot{A}{first} makes \AuthorA, \AuthorAOrcid, ... come from the record with key "first", and both author-block layouts below are built from those macros.
@@ -28,11 +42,16 @@
 \newcommand{\PaperAuthorsPlain}{\AuthorA, \AuthorB, and \AuthorC}
 \newcommand{\PaperCorrespondingAuthor}{\AuthorA}
 \newcommand{\PaperCorrespondingEmail}{\AuthorAEmail}
+% PDF metadata (pdfauthor) of main.tex and supplementary.tex: empty in anonymous mode. The letters keep using \PaperAuthorsPlain.
+\ifAnonymous\newcommand{\PaperPdfAuthor}{}\else\newcommand{\PaperPdfAuthor}{\PaperAuthorsPlain}\fi
 
 % ---- Author block -----------------------------------------------------------
 % Journal: one author line with memberships, plus footnotes for dates, funding, and affiliations. Conference: side-by-side name/affiliation blocks and no footnotes (conferences put funding in the Acknowledgment). The \if lives inside the macro so the article-class letters can still \input this file.
 \newcommand{\PaperAuthors}{%
-  \ifCLASSOPTIONconference
+  \ifAnonymous
+    % Double-anonymous: one neutral line, no footnotes at all (dates, funding, corresponding author, affiliations, data link).
+    \ifCLASSOPTIONconference \author{\IEEEauthorblockN{Anonymous Authors}}\else \author{Anonymous Authors}\fi
+  \else\ifCLASSOPTIONconference
     \author{%
       \IEEEauthorblockN{\AuthorA\,\orcidlink{\AuthorAOrcid}}
       \IEEEauthorblockA{\textit{\AuthorADept}\\ \textit{\AuthorAInst}\\ \AuthorACity\\ \AuthorAEmail}
@@ -51,11 +70,16 @@
       \thanks{\AuthorC{} is with the \AuthorCDept, \AuthorCInst, \AuthorCCity{} (e-mail: \AuthorCEmail).}%
       \if\relax\detokenize\expandafter{\PaperDataURL}\relax\else\thanks{Code and data are available at \PaperDataURLLink.}\fi
     }%
-  \fi
+  \fi\fi
 }
 
 % ---- Running header (journal only; IEEEtran prints none in conference mode) --
+% In anonymous mode the header names neither the venue nor the authors.
 \newcommand{\PaperHeader}{%
-  \markboth{\PaperVenue,~Vol.~XX, No.~X, Month~YYYY}%
-           {Author \MakeLowercase{\textit{et al.}}: \PaperShortTitle}%
+  \ifAnonymous
+    \markboth{\PaperShortTitle}{\PaperShortTitle}%
+  \else
+    \markboth{\PaperVenue,~Vol.~XX, No.~X, Month~YYYY}%
+             {Author \MakeLowercase{\textit{et al.}}: \PaperShortTitle}%
+  \fi
 }

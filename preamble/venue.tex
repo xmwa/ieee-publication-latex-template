@@ -1,3 +1,5 @@
 % preamble/venue.tex: journal or conference.
 % \input BEFORE \documentclass by main.tex and supplementary.tex, which both use \documentclass[\PaperMode]{IEEEtran}. Change the word below to switch the whole project; the author block, footnotes, and biographies follow automatically. \providecommand (not \def) so `make preview` can override it from the command line.
 \providecommand{\PaperMode}{journal}   % journal | conference
+% Double-anonymous review: 1 = no author names, affiliations, ORCIDs, grades, author footnotes, data link, acknowledgment, biographies, or names in the PDF metadata or running header; 0 = named (final version, or a single-anonymous venue). The author records and every section stay untouched, so this switch is all you change. Also read by letters/response.tex (reviewers see it) and, only if you opt in there, letters/cover_letter.tex. `make anon` sets it from the command line.
+\providecommand{\Anonymous}{0}   % 0 | 1
